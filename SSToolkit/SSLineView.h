@@ -13,6 +13,11 @@
  
  The inset is drawn under the line if `insetColor` is not `nil`.
  */
+typedef enum {
+    SSLineDirectionHorizontal = 0,
+    SSLineDirectionVertical
+} SSLineDirection;
+
 @interface SSLineView : UIView
 
 ///--------------------
@@ -33,6 +38,12 @@
  */
 @property (nonatomic, retain) UIColor *insetColor;
 
+/**
+ The direction to draw the line
+ 
+ The default is SSLineDirectionHorizontal
+*/
+@property (nonatomic, assign) SSLineDirection lineDirection;
 
 ///---------------------
 /// @name Drawing Dashes
