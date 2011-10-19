@@ -19,6 +19,7 @@
 @synthesize dashPhase = _dashPhase;
 @synthesize dashLengths = _dashLengths;
 @synthesize lineDirection = _lineDirection;
+@synthesize lineWidth = _lineWidth;
 
 - (void)setLineColor:(UIColor *)lineColor {
 	[lineColor retain];
@@ -52,6 +53,23 @@
 	[self setNeedsDisplay];
 }
 
+- (void)setLineDirection:(SSLineDirection)lineDirection
+{
+    _lineDirection = lineDirection;
+    
+    [self setNeedsDisplay];
+}
+
+- (void)setLineWidth:(CGFloat)lineWidth
+{
+    if( lineWidth < 0.0 )
+    {
+        lineWidth = 0.0;
+    }
+    _lineWidth = lineWidth;
+    
+    [self setNeedsDisplay];
+}
 
 #pragma mark - NSObject
 
@@ -83,7 +101,8 @@
 - (void)drawRect:(CGRect)rect {	
 	CGContextRef context = UIGraphicsGetCurrentContext();
 	CGContextClipToRect(context, rect);
-	CGContextSetLineWidth(context, 2.0f);
+    CGFloat halfLineWidth = (_insetColor != nil) ? _lineWidth / 2 : _lineWidth;
+	CGContextSetLineWidth(context, halfLineWidth);
 	
 	if (_dashLengths) {
 		NSUInteger dashLengthsCount = [_dashLengths count];
@@ -102,13 +121,13 @@
 		CGContextSetStrokeColorWithColor(context, _insetColor.CGColor);
         if( _lineDirection == SSLineDirectionHorizontal )
         {
-            CGContextMoveToPoint(context, 0.0f, 1.0f);
-            CGContextAddLineToPoint(context, rect.size.width, 1.0f);
+            CGContextMoveToPoint(context, 0.0f, halfLineWidth);
+            CGContextAddLineToPoint(context, rect.size.width, halfLineWidth);
         }
         else
         {
-            CGContextMoveToPoint(context, 1.0f, 0.0f);
-            CGContextAddLineToPoint(context, 1.0f, rect.size.height);
+            CGContextMoveToPoint(context, halfLineWidth, 0.0f);
+            CGContextAddLineToPoint(context, halfLineWidth, rect.size.height);
         }
 		CGContextStrokePath(context);
 	}
@@ -138,6 +157,7 @@
 	self.lineColor = [UIColor grayColor];
 	self.insetColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
     self.lineDirection = SSLineDirectionHorizontal;
+    self.lineWidth = 2.0f;
 }
 
 @end

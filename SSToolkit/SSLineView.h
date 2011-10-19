@@ -45,6 +45,11 @@ typedef enum {
 */
 @property (nonatomic, assign) SSLineDirection lineDirection;
 
+/**
+ The width to draw the line
+ */
+@property (nonatomic, assign) CGFloat lineWidth;
+
 ///---------------------
 /// @name Drawing Dashes
 ///---------------------
